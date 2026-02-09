@@ -1,0 +1,1526 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6c5ce7;
+            --primary-light: #a29bfe;
+            --secondary: #00cec9;
+            --accent: #fd79a8;
+            --dark: #06060f;
+            --dark2: #0d0d1f;
+            --dark3: #141430;
+            --card-bg: #12122b;
+            --text: #e8e8ff;
+            --text-muted: #7878a0;
+            --success: #00b894;
+            --danger: #ff4757;
+            --warning: #ffa502;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--dark);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--dark); }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
+
+        /* ============ BG PARTICLES ============ */
+        .particles-bg {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.08;
+            animation: floatUp linear infinite;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            10% { opacity: 0.08; }
+            90% { opacity: 0.08; }
+            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        }
+
+        /* ============ GLOW ORB ============ */
+        .glow-orb {
+            position: fixed;
+            width: 400px; height: 400px;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.07;
+            z-index: 0;
+            pointer-events: none;
+            animation: orbFloat 12s ease-in-out infinite alternate;
+        }
+        .glow-orb.orb1 { background: var(--primary); top: -100px; left: -100px; }
+        .glow-orb.orb2 { background: var(--accent); bottom: -100px; right: -100px; animation-delay: 4s; }
+        .glow-orb.orb3 { background: var(--secondary); top: 50%; left: 50%; transform: translate(-50%,-50%); animation-delay: 8s; }
+        @keyframes orbFloat {
+            0% { transform: translate(0,0) scale(1); }
+            100% { transform: translate(50px, -50px) scale(1.3); }
+        }
+
+        /* ============ NAVBAR ============ */
+        .navbar {
+            position: fixed;
+            top: 0; width: 100%;
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(25px);
+            background: rgba(6,6,15,0.75);
+            border-bottom: 1px solid rgba(108,92,231,0.12);
+            transition: all 0.4s ease;
+        }
+        .navbar.scrolled {
+            padding: 10px 32px;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+        .logo-icon {
+            width: 44px; height: 44px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px; font-weight: 900;
+            color: white;
+            animation: logoGlow 3s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+        }
+        .logo-icon::after {
+            content: '';
+            position: absolute;
+            width: 150%; height: 150%;
+            background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.15) 50%, transparent 60%);
+            top: -25%; left: -150%;
+            animation: logoShine 3s ease-in-out infinite;
+        }
+        @keyframes logoGlow {
+            0%,100% { box-shadow: 0 0 15px rgba(108,92,231,0.4); }
+            50% { box-shadow: 0 0 35px rgba(108,92,231,0.7); }
+        }
+        @keyframes logoShine {
+            0% { left: -150%; }
+            50%,100% { left: 150%; }
+        }
+        .logo-text {
+            font-size: 20px; font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-links {
+            display: flex; gap: 6px; list-style: none;
+        }
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: 8px 18px;
+            border-radius: 10px;
+            font-size: 14px; font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .nav-links a:hover, .nav-links a.active {
+            color: white;
+            background: rgba(108,92,231,0.15);
+        }
+        .nav-right {
+            display: flex; align-items: center; gap: 10px;
+        }
+        .admin-btn {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white; border: none;
+            padding: 10px 22px; border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 13px; font-weight: 600;
+            cursor: pointer; transition: all 0.3s ease;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .admin-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(108,92,231,0.4);
+        }
+        .hamburger {
+            display: none; background: none; border: none;
+            flex-direction: column; gap: 5px; cursor: pointer; padding: 5px;
+        }
+        .hamburger span {
+            width: 24px; height: 2.5px;
+            background: var(--text); border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        /* ============ HERO ============ */
+        .hero {
+            min-height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+            text-align: center;
+            padding: 130px 20px 80px;
+            position: relative; z-index: 1;
+        }
+        .hero-content { max-width: 780px; }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 8px 20px;
+            background: rgba(108,92,231,0.12);
+            border: 1px solid rgba(108,92,231,0.25);
+            border-radius: 50px;
+            font-size: 13px; color: var(--primary-light);
+            margin-bottom: 28px;
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+        .hero-badge .dot {
+            width: 8px; height: 8px;
+            background: var(--success);
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%,100% { box-shadow: 0 0 0 0 rgba(0,184,148,0.5); }
+            50% { box-shadow: 0 0 0 8px rgba(0,184,148,0); }
+        }
+        .hero h1 {
+            font-size: 54px; font-weight: 900;
+            line-height: 1.1; margin-bottom: 22px;
+            animation: fadeInUp 0.8s ease 0.4s both;
+        }
+        .hero .highlight {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero p {
+            font-size: 17px; color: var(--text-muted);
+            line-height: 1.8; margin-bottom: 40px;
+            animation: fadeInUp 0.8s ease 0.6s both;
+        }
+        .hero-buttons {
+            display: flex; gap: 14px; justify-content: center;
+            animation: fadeInUp 0.8s ease 0.8s both;
+            flex-wrap: wrap;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white; border: none;
+            padding: 14px 34px; border-radius: 14px;
+            font-family: 'Poppins',sans-serif;
+            font-size: 15px; font-weight: 600;
+            cursor: pointer; transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex; align-items: center; gap: 8px;
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(108,92,231,0.4);
+        }
+        .btn-outline {
+            background: transparent;
+            color: var(--text); border: 1px solid rgba(255,255,255,0.12);
+            padding: 14px 34px; border-radius: 14px;
+            font-family: 'Poppins',sans-serif;
+            font-size: 15px; font-weight: 600;
+            cursor: pointer; transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex; align-items: center; gap: 8px;
+        }
+        .btn-outline:hover {
+            background: rgba(255,255,255,0.06);
+            transform: translateY(-3px);
+        }
+
+        /* ============ BIO SECTION ============ */
+        .bio-section {
+            padding: 80px 20px;
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative; z-index: 1;
+        }
+        .bio-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 24px;
+            padding: 50px;
+            display: flex;
+            gap: 40px;
+            align-items: center;
+            transition: all 0.4s ease;
+        }
+        .bio-card:hover {
+            border-color: rgba(108,92,231,0.3);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .bio-avatar {
+            width: 150px; height: 150px;
+            border-radius: 24px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            display: flex; align-items: center; justify-content: center;
+            font-size: 56px; font-weight: 900;
+            color: white;
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .bio-avatar img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            border-radius: 24px;
+        }
+        .bio-avatar .avatar-placeholder {
+            display: flex; align-items: center; justify-content: center;
+            width: 100%; height: 100%;
+        }
+        .bio-info h2 {
+            font-size: 28px; font-weight: 800; margin-bottom: 6px;
+        }
+        .bio-role {
+            font-size: 15px; color: var(--primary-light);
+            font-weight: 600; margin-bottom: 14px;
+        }
+        .bio-desc {
+            color: var(--text-muted);
+            font-size: 14px; line-height: 1.8;
+            margin-bottom: 20px;
+        }
+        .bio-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .bio-detail-item {
+            display: flex; align-items: center; gap: 8px;
+            font-size: 13px; color: var(--text-muted);
+        }
+        .bio-detail-item .icon {
+            font-size: 16px;
+        }
+        .bio-detail-item strong {
+            color: var(--text); font-weight: 600;
+        }
+        .bio-socials {
+            display: flex; gap: 10px; margin-top: 20px;
+        }
+        .social-btn {
+            width: 40px; height: 40px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--text-muted);
+        }
+        .social-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(108,92,231,0.3);
+        }
+
+        /* ============ STATS BAR ============ */
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            padding: 50px 20px;
+            position: relative; z-index: 1;
+            flex-wrap: wrap;
+        }
+        .stat-item { text-align: center; }
+        .stat-num {
+            font-size: 40px; font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .stat-label {
+            font-size: 13px; color: var(--text-muted); margin-top: 4px;
+        }
+
+        /* ============ SECTION STYLES ============ */
+        .section {
+            padding: 80px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative; z-index: 1;
+        }
+        .section-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .section-tag {
+            display: inline-block;
+            padding: 6px 18px;
+            background: rgba(108,92,231,0.12);
+            border-radius: 50px;
+            font-size: 12px; font-weight: 700;
+            color: var(--primary-light);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 14px;
+        }
+        .section-header h2 {
+            font-size: 38px; font-weight: 800;
+            margin-bottom: 12px;
+        }
+        .section-header p {
+            color: var(--text-muted); font-size: 15px;
+            max-width: 480px; margin: 0 auto;
+        }
+
+        /* ============ FILTER ============ */
+        .filter-bar {
+            display: flex; justify-content: center;
+            gap: 10px; margin-bottom: 40px; flex-wrap: wrap;
+        }
+        .filter-btn {
+            padding: 9px 22px;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: transparent;
+            color: var(--text-muted);
+            border-radius: 12px;
+            font-family: 'Poppins',sans-serif;
+            font-size: 13px; font-weight: 500;
+            cursor: pointer; transition: all 0.3s ease;
+        }
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--primary);
+            color: white; border-color: var(--primary);
+        }
+
+        /* ============ PROJECT CARDS ============ */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 24px;
+        }
+        .project-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.04);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.35);
+            border-color: rgba(108,92,231,0.3);
+        }
+        .project-card.inactive { opacity: 0.45; filter: grayscale(0.5); }
+        .card-img {
+            width: 100%; height: 210px;
+            position: relative; overflow: hidden;
+        }
+        .card-img img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+        .project-card:hover .card-img img { transform: scale(1.08); }
+        .card-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, transparent 30%, rgba(6,6,15,0.92));
+            opacity: 0; transition: opacity 0.35s ease;
+            display: flex; align-items: flex-end;
+            justify-content: center; padding: 20px;
+        }
+        .project-card:hover .card-overlay { opacity: 1; }
+        .overlay-btns { display: flex; gap: 10px; }
+        .o-btn {
+            padding: 10px 22px; border-radius: 10px;
+            border: none; font-family: 'Poppins',sans-serif;
+            font-size: 13px; font-weight: 600;
+            cursor: pointer; transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        .o-btn.live { background: var(--primary); color: white; }
+        .o-btn.live:hover { background: var(--primary-light); }
+        .o-btn.info { background: rgba(255,255,255,0.12); color: white; backdrop-filter: blur(8px); }
+        .card-badge {
+            position: absolute; top: 14px; right: 14px;
+            padding: 5px 14px; border-radius: 50px;
+            font-size: 11px; font-weight: 700;
+            backdrop-filter: blur(10px); z-index: 2;
+        }
+        .card-badge.on {
+            background: rgba(0,184,148,0.2); color: var(--success);
+            border: 1px solid rgba(0,184,148,0.25);
+        }
+        .card-badge.off {
+            background: rgba(255,71,87,0.2); color: var(--danger);
+            border: 1px solid rgba(255,71,87,0.25);
+        }
+        .card-logo {
+            position: absolute; top: 14px; left: 14px;
+            width: 40px; height: 40px;
+            border-radius: 12px;
+            background: var(--dark2);
+            border: 2px solid rgba(255,255,255,0.1);
+            overflow: hidden; z-index: 2;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .card-logo img { width: 100%; height: 100%; object-fit: cover; }
+        .card-logo .cl-text {
+            font-size: 14px; font-weight: 800; color: white;
+        }
+        .card-body { padding: 22px 24px; }
+        .card-body h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+        .card-body p {
+            color: var(--text-muted); font-size: 13px;
+            line-height: 1.7; margin-bottom: 14px;
+            display: -webkit-box; -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical; overflow: hidden;
+        }
+        .card-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+        .tag {
+            padding: 4px 11px; background: rgba(108,92,231,0.1);
+            color: var(--primary-light); border-radius: 6px;
+            font-size: 11px; font-weight: 600;
+        }
+        .card-foot {
+            display: flex; justify-content: space-between;
+            padding-top: 14px;
+            border-top: 1px solid rgba(255,255,255,0.04);
+            font-size: 12px; color: var(--text-muted);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            grid-column: 1/-1;
+        }
+        .empty-state .icon { font-size: 64px; margin-bottom: 16px; }
+        .empty-state h3 { font-size: 22px; margin-bottom: 8px; }
+        .empty-state p { color: var(--text-muted); font-size: 14px; }
+
+        /* ============ FOOTER ============ */
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid rgba(255,255,255,0.04);
+            color: var(--text-muted); font-size: 13px;
+            position: relative; z-index: 1;
+        }
+
+        /* ============ LOGIN MODAL ============ */
+        .modal-overlay {
+            display: none; position: fixed;
+            inset: 0; z-index: 3000;
+            align-items: center; justify-content: center;
+        }
+        .modal-overlay.show { display: flex; }
+        .modal-bg {
+            position: absolute; inset: 0;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(12px);
+        }
+        .login-box {
+            position: relative; z-index: 2;
+            background: var(--dark2);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 24px;
+            padding: 44px 40px;
+            width: 100%; max-width: 420px;
+            animation: slideUp 0.45s ease;
+        }
+        .login-box h2 { text-align: center; font-size: 24px; margin-bottom: 6px; }
+        .login-box .sub { text-align: center; color: var(--text-muted); font-size: 14px; margin-bottom: 30px; }
+
+        /* ============ ADMIN PANEL ============ */
+        .admin-panel {
+            display: none; position: fixed;
+            inset: 0; z-index: 2000;
+        }
+        .admin-panel.show { display: flex; align-items: center; justify-content: center; }
+        .admin-wrap {
+            position: relative; z-index: 2;
+            width: 100%; max-width: 1100px;
+            height: 92vh;
+            background: var(--dark2);
+            border-radius: 24px;
+            border: 1px solid rgba(255,255,255,0.06);
+            display: flex; flex-direction: column;
+            overflow: hidden;
+            animation: slideUp 0.45s ease;
+        }
+        .admin-head {
+            padding: 20px 30px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(108,92,231,0.04);
+        }
+        .admin-head h2 { font-size: 20px; display: flex; align-items: center; gap: 10px; }
+        .close-btn {
+            width: 38px; height: 38px; border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.04);
+            color: var(--text); font-size: 18px;
+            cursor: pointer; display: flex;
+            align-items: center; justify-content: center;
+            transition: all 0.3s ease;
+        }
+        .close-btn:hover { background: var(--danger); border-color: var(--danger); }
+        .admin-main { display: flex; flex: 1; overflow: hidden; }
+        .admin-sidebar {
+            width: 190px; border-right: 1px solid rgba(255,255,255,0.04);
+            padding: 18px 10px;
+            display: flex; flex-direction: column; gap: 4px;
+        }
+        .sb-btn {
+            padding: 11px 14px; border-radius: 12px;
+            border: none; background: transparent;
+            color: var(--text-muted);
+            font-family: 'Poppins',sans-serif;
+            font-size: 13px; cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            display: flex; align-items: center; gap: 9px;
+        }
+        .sb-btn:hover, .sb-btn.active {
+            background: rgba(108,92,231,0.12); color: white;
+        }
+        .admin-content { flex: 1; padding: 24px; overflow-y: auto; }
+
+        /* ============ FORM STYLES ============ */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+        .fg { display: flex; flex-direction: column; gap: 7px; }
+        .fg.full { grid-column: 1/-1; }
+        .fg label { font-size: 13px; font-weight: 500; color: var(--text-muted); }
+        .fg input, .fg textarea, .fg select {
+            padding: 12px 16px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            color: var(--text);
+            font-family: 'Poppins',sans-serif;
+            font-size: 14px; outline: none;
+            transition: all 0.3s ease;
+        }
+        .fg input:focus, .fg textarea:focus, .fg select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(108,92,231,0.12);
+        }
+        .fg textarea { min-height: 90px; resize: vertical; }
+        .fg select option { background: var(--dark2); }
+        .form-actions {
+            grid-column: 1/-1;
+            display: flex; gap: 12px; margin-top: 8px;
+        }
+        .btn-save {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white; border: none;
+            padding: 12px 30px; border-radius: 12px;
+            font-family: 'Poppins',sans-serif;
+            font-size: 14px; font-weight: 600;
+            cursor: pointer; transition: all 0.3s ease;
+        }
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(108,92,231,0.35);
+        }
+        .btn-cancel {
+            background: rgba(255,255,255,0.04);
+            color: var(--text); border: 1px solid rgba(255,255,255,0.08);
+            padding: 12px 30px; border-radius: 12px;
+            font-family: 'Poppins',sans-serif;
+            font-size: 14px; font-weight: 600;
+            cursor: pointer; transition: all 0.3s ease;
+        }
+        .btn-cancel:hover { background: rgba(255,255,255,0.08); }
+
+        /* Image Preview */
+        .img-preview {
+            width: 100%; height: 130px;
+            border-radius: 12px;
+            border: 2px dashed rgba(255,255,255,0.08);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--text-muted); font-size: 13px;
+            cursor: default; transition: all 0.3s ease;
+            overflow: hidden; background-size: cover; background-position: center;
+        }
+        .img-preview.has-img { border-style: solid; border-color: var(--primary); }
+        .img-preview.has-img .pv-text { display: none; }
+
+        /* ============ ADMIN LIST ============ */
+        .a-list { display: flex; flex-direction: column; gap: 10px; }
+        .a-item {
+            display: flex; align-items: center; gap: 14px;
+            padding: 14px 16px;
+            background: rgba(255,255,255,0.02);
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.04);
+            transition: all 0.3s ease;
+        }
+        .a-item:hover {
+            border-color: rgba(108,92,231,0.25);
+            background: rgba(108,92,231,0.04);
+        }
+        .a-thumb {
+            width: 72px; height: 48px;
+            border-radius: 10px; overflow: hidden; flex-shrink: 0;
+        }
+        .a-thumb img { width: 100%; height: 100%; object-fit: cover; }
+        .a-info { flex: 1; }
+        .a-info h4 { font-size: 14px; margin-bottom: 3px; }
+        .a-info span { font-size: 12px; color: var(--text-muted); }
+        .a-actions { display: flex; align-items: center; gap: 8px; }
+
+        /* Toggle Switch */
+        .toggle { position: relative; width: 48px; height: 26px; cursor: pointer; }
+        .toggle input { opacity: 0; width: 0; height: 0; }
+        .toggle-track {
+            position: absolute; inset: 0;
+            background: var(--danger);
+            border-radius: 50px; transition: all 0.35s ease;
+        }
+        .toggle-track::before {
+            content: ''; position: absolute;
+            width: 20px; height: 20px;
+            border-radius: 50%; background: white;
+            top: 3px; left: 3px;
+            transition: all 0.35s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+        .toggle input:checked + .toggle-track { background: var(--success); }
+        .toggle input:checked + .toggle-track::before { transform: translateX(22px); }
+
+        .btn-sm {
+            width: 34px; height: 34px; border-radius: 10px;
+            border: none; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 14px; transition: all 0.3s ease;
+        }
+        .btn-edit { background: rgba(108,92,231,0.12); color: var(--primary-light); }
+        .btn-edit:hover { background: var(--primary); color: white; }
+        .btn-del { background: rgba(255,71,87,0.12); color: var(--danger); }
+        .btn-del:hover { background: var(--danger); color: white; }
+
+        /* ============ TOAST ============ */
+        .toast {
+            position: fixed; bottom: 28px; right: 28px;
+            padding: 14px 26px;
+            border-radius: 14px; color: white;
+            font-size: 14px; font-weight: 500;
+            z-index: 9999;
+            display: flex; align-items: center; gap: 10px;
+            animation: toastIn 0.4s ease, toastOut 0.4s ease 2.6s both;
+            backdrop-filter: blur(12px);
+        }
+        .toast.success { background: rgba(0,184,148,0.92); box-shadow: 0 8px 30px rgba(0,184,148,0.3); }
+        .toast.error { background: rgba(255,71,87,0.92); box-shadow: 0 8px 30px rgba(255,71,87,0.3); }
+        .toast.info { background: rgba(108,92,231,0.92); box-shadow: 0 8px 30px rgba(108,92,231,0.3); }
+        @keyframes toastIn { from { transform: translateX(120px); opacity:0; } to { transform: translateX(0); opacity:1; } }
+        @keyframes toastOut { from { transform: translateX(0); opacity:1; } to { transform: translateX(120px); opacity:0; } }
+
+        /* ============ SETTINGS CARD ============ */
+        .s-card {
+            padding: 22px;
+            background: rgba(255,255,255,0.02);
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.04);
+            margin-bottom: 16px;
+        }
+        .s-card h4 { font-size: 15px; margin-bottom: 6px; }
+        .s-card p { color: var(--text-muted); font-size: 13px; line-height: 1.7; }
+
+        /* ============ ANIMATIONS ============ */
+        @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+        @keyframes fadeInUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
+        @keyframes slideUp { from { opacity:0; transform:translateY(50px); } to { opacity:1; transform:translateY(0); } }
+        .anim-scroll { opacity:0; transform:translateY(30px); transition: all 0.6s ease; }
+        .anim-scroll.visible { opacity:1; transform:translateY(0); }
+
+        /* ============ RESPONSIVE ============ */
+        @media(max-width:768px) {
+            .navbar { padding: 12px 18px; }
+            .nav-links {
+                display:none; position:absolute; top:100%; left:0; width:100%;
+                background:var(--dark2); padding:16px; flex-direction:column;
+                border-bottom:1px solid rgba(255,255,255,0.04);
+            }
+            .nav-links.show { display:flex; }
+            .hamburger { display:flex; }
+            .admin-btn span.ab-text { display:none; }
+            .hero h1 { font-size: 32px; }
+            .hero p { font-size: 15px; }
+            .stats-bar { gap:24px; }
+            .stat-num { font-size:30px; }
+            .bio-card { flex-direction:column; text-align:center; padding:30px; }
+            .bio-avatar { width:110px; height:110px; margin:0 auto; }
+            .bio-details { grid-template-columns:1fr; text-align:left; }
+            .bio-socials { justify-content:center; }
+            .projects-grid { grid-template-columns:1fr; }
+            .section { padding:50px 16px; }
+            .section-header h2 { font-size:28px; }
+            .admin-wrap { height:100vh; border-radius:0; }
+            .admin-sidebar { display:none; }
+            .form-grid { grid-template-columns:1fr; }
+            .a-item { flex-wrap:wrap; }
+            .hero-buttons { flex-direction:column; align-items:center; }
+            .login-box { margin:16px; padding:30px 24px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Particles BG -->
+<div class="particles-bg" id="particlesBg"></div>
+<div class="glow-orb orb1"></div>
+<div class="glow-orb orb2"></div>
+<div class="glow-orb orb3"></div>
+
+<!-- Navbar -->
+<nav class="navbar" id="navbar">
+    <a href="#" class="logo">
+        <div class="logo-icon" id="navLogoIcon">P</div>
+        <span class="logo-text" id="navLogoText">Porto</span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+        <li><a href="#home" class="active">Beranda</a></li>
+        <li><a href="#about">Tentang</a></li>
+        <li><a href="#projects">Karya</a></li>
+    </ul>
+    <div class="nav-right">
+        <button class="admin-btn" onclick="showLogin()">
+            🔐 <span class="ab-text">Admin</span>
+        </button>
+        <button class="hamburger" onclick="toggleNav()">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+    <div class="hero-content">
+        <div class="hero-badge">
+            <span class="dot"></span>
+            <span id="heroBadgeText">Available for work</span>
+        </div>
+        <h1 id="heroTitle">Saya Membuat <br><span class="highlight">Website Modern</span></h1>
+        <p id="heroDesc">Full-stack web developer yang berfokus pada pembuatan website yang indah, fungsional, dan responsif.</p>
+        <div class="hero-buttons">
+            <a href="#projects" class="btn-primary">🚀 Lihat Karya</a>
+            <a href="#about" class="btn-outline">👤 Tentang Saya</a>
+        </div>
+    </div>
+</section>
+
+<!-- BIO -->
+<section class="bio-section anim-scroll" id="about">
+    <div class="bio-card">
+        <div class="bio-avatar" id="bioAvatar">
+            <div class="avatar-placeholder" id="avatarPlaceholder">?</div>
+        </div>
+        <div class="bio-info">
+            <h2 id="bioName">Nama Belum Diatur</h2>
+            <div class="bio-role" id="bioRole">Web Developer</div>
+            <p class="bio-desc" id="bioDesc">Bio belum diisi. Silakan atur melalui Admin Panel → Pengaturan → Biodata.</p>
+            <div class="bio-details" id="bioDetails">
+                <div class="bio-detail-item"><span class="icon">📍</span> <strong id="bioLoc">-</strong></div>
+                <div class="bio-detail-item"><span class="icon">📧</span> <strong id="bioEmail">-</strong></div>
+                <div class="bio-detail-item"><span class="icon">📱</span> <strong id="bioPhone">-</strong></div>
+                <div class="bio-detail-item"><span class="icon">🎂</span> <strong id="bioAge">-</strong></div>
+            </div>
+            <div class="bio-socials" id="bioSocials">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar anim-scroll">
+    <div class="stat-item">
+        <div class="stat-num" id="statProjects">0</div>
+        <div class="stat-label">Project</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-num">99<span style="font-size:18px">%</span></div>
+        <div class="stat-label">Kepuasan</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-num" id="statExp">0<span style="font-size:18px">+</span></div>
+        <div class="stat-label">Tahun Pengalaman</div>
+    </div>
+</div>
+
+<!-- PROJECTS -->
+<section class="section" id="projects">
+    <div class="section-header anim-scroll">
+        <span class="section-tag">📂 Portfolio</span>
+        <h2>Karya Terbaru</h2>
+        <p>Koleksi website yang telah dikerjakan</p>
+    </div>
+    <div class="filter-bar anim-scroll">
+        <button class="filter-btn active" onclick="filterProjects('all', this)">Semua</button>
+        <button class="filter-btn" onclick="filterProjects('active', this)">🟢 Active</button>
+        <button class="filter-btn" onclick="filterProjects('offline', this)">🔴 Offline</button>
+    </div>
+    <div class="projects-grid" id="projectsGrid"></div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+    <p id="footerText">© 2025 Portfolio. Dibuat dengan ❤️</p>
+</footer>
+
+<!-- LOGIN -->
+<div class="modal-overlay" id="loginModal">
+    <div class="modal-bg" onclick="closeLogin()"></div>
+    <div class="login-box">
+        <h2>🔐 Admin</h2>
+        <p class="sub">Masukkan password admin</p>
+        <div class="fg" style="margin-bottom:20px">
+            <label>Password</label>
+            <input type="password" id="pwInput" placeholder="••••••••" onkeypress="if(event.key==='Enter')doLogin()">
+        </div>
+        <button class="btn-save" style="width:100%; padding:14px;" onclick="doLogin()">Masuk</button>
+    </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div class="admin-panel" id="adminPanel">
+    <div class="modal-bg" onclick="closeAdmin()"></div>
+    <div class="admin-wrap">
+        <div class="admin-head">
+            <h2>⚙️ Admin Panel</h2>
+            <button class="close-btn" onclick="closeAdmin()">✕</button>
+        </div>
+        <div class="admin-main">
+            <div class="admin-sidebar" id="adminSidebar">
+                <button class="sb-btn active" onclick="switchTab('add',this)">➕ Tambah</button>
+                <button class="sb-btn" onclick="switchTab('manage',this)">📋 Kelola</button>
+                <button class="sb-btn" onclick="switchTab('bio',this)">👤 Biodata</button>
+                <button class="sb-btn" onclick="switchTab('site',this)">🎨 Situs</button>
+                <button class="sb-btn" onclick="switchTab('settings',this)">⚙️ Lainnya</button>
+            </div>
+            <div class="admin-content" id="adminContent"></div>
+        </div>
+        <!-- Mobile Tab Bar -->
+        <div id="mobileTabBar" style="display:none; border-top:1px solid rgba(255,255,255,0.04); padding:8px; gap:4px; justify-content:space-around;">
+            <button class="sb-btn active" onclick="switchTab('add',this)" style="flex:1;justify-content:center;font-size:12px;">➕</button>
+            <button class="sb-btn" onclick="switchTab('manage',this)" style="flex:1;justify-content:center;font-size:12px;">📋</button>
+            <button class="sb-btn" onclick="switchTab('bio',this)" style="flex:1;justify-content:center;font-size:12px;">👤</button>
+            <button class="sb-btn" onclick="switchTab('site',this)" style="flex:1;justify-content:center;font-size:12px;">🎨</button>
+            <button class="sb-btn" onclick="switchTab('settings',this)" style="flex:1;justify-content:center;font-size:12px;">⚙️</button>
+        </div>
+    </div>
+</div>
+
+<div id="toastBox"></div>
+
+<script>
+// ================= CONFIG =================
+const PASS = 'rajxz09';
+let loggedIn = false;
+
+// ================= DATA LOAD/SAVE =================
+function loadData(key, fallback) {
+    const d = localStorage.getItem(key);
+    return d ? JSON.parse(d) : fallback;
+}
+function saveData(key, data) {
+    localStorage.setItem(key, JSON.stringify(data));
+}
+
+// Projects - start empty
+let projects = loadData('pp_projects', []);
+
+// Biodata
+let bio = loadData('pp_bio', {
+    name: '',
+    role: '',
+    desc: '',
+    avatar: '',
+    avatarInitial: '?',
+    location: '',
+    email: '',
+    phone: '',
+    age: '',
+    github: '',
+    instagram: '',
+    linkedin: '',
+    website: '',
+    experience: '0'
+});
+
+// Site settings
+let site = loadData('pp_site', {
+    logoText: 'Porto',
+    logoInitial: 'P',
+    heroTitle: 'Saya Membuat <br><span class="highlight">Website Modern</span>',
+    heroBadge: 'Available for work',
+    heroDesc: 'Full-stack web developer yang berfokus pada pembuatan website yang indah, fungsional, dan responsif.',
+    footerText: '© 2025 Portfolio. Dibuat dengan ❤️'
+});
+
+// ================= PARTICLES =================
+(function(){
+    const bg = document.getElementById('particlesBg');
+    const cols = ['#6c5ce7','#00cec9','#fd79a8','#a29bfe','#ffeaa7'];
+    for(let i=0;i<25;i++){
+        const p = document.createElement('div');
+        p.className='particle';
+        const s = Math.random()*5+2;
+        p.style.cssText=`width:${s}px;height:${s}px;left:${Math.random()*100}%;background:${cols[~~(Math.random()*cols.length)]};animation-duration:${Math.random()*18+12}s;animation-delay:${Math.random()*10}s;`;
+        bg.appendChild(p);
+    }
+})();
+
+// ================= NAVBAR =================
+window.addEventListener('scroll',()=>{
+    document.getElementById('navbar').classList.toggle('scrolled', scrollY>50);
+});
+function toggleNav(){ document.getElementById('navLinks').classList.toggle('show'); }
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+    a.addEventListener('click',function(e){
+        e.preventDefault();
+        const t=document.querySelector(this.getAttribute('href'));
+        if(t) t.scrollIntoView({behavior:'smooth'});
+        document.getElementById('navLinks').classList.remove('show');
+    });
+});
+
+// ================= SCROLL ANIM =================
+const obs = new IntersectionObserver(es=>{
+    es.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
+},{threshold:0.1});
+document.querySelectorAll('.anim-scroll').forEach(el=>obs.observe(el));
+
+// ================= APPLY SITE SETTINGS =================
+function applySite(){
+    document.getElementById('navLogoIcon').textContent = site.logoInitial||'P';
+    document.getElementById('navLogoText').textContent = site.logoText||'Porto';
+    document.getElementById('heroTitle').innerHTML = site.heroTitle||'Portfolio';
+    document.getElementById('heroBadgeText').textContent = site.heroBadge||'';
+    document.getElementById('heroDesc').textContent = site.heroDesc||'';
+    document.getElementById('footerText').textContent = site.footerText||'';
+    document.title = (site.logoText||'Portfolio') + ' - Portfolio';
+}
+
+// ================= APPLY BIO =================
+function applyBio(){
+    const av = document.getElementById('bioAvatar');
+    const ph = document.getElementById('avatarPlaceholder');
+    if(bio.avatar){
+        av.innerHTML = `<img src="${bio.avatar}" onerror="this.outerHTML='<div class=avatar-placeholder>${bio.avatarInitial||'?'}</div>'">`;
+    } else {
+        ph.textContent = bio.avatarInitial || (bio.name ? bio.name.charAt(0).toUpperCase() : '?');
+    }
+    document.getElementById('bioName').textContent = bio.name||'Nama Belum Diatur';
+    document.getElementById('bioRole').textContent = bio.role||'Web Developer';
+    document.getElementById('bioDesc').textContent = bio.desc||'Bio belum diisi. Silakan atur melalui Admin Panel → Biodata.';
+    document.getElementById('bioLoc').textContent = bio.location||'-';
+    document.getElementById('bioEmail').textContent = bio.email||'-';
+    document.getElementById('bioPhone').textContent = bio.phone||'-';
+    document.getElementById('bioAge').textContent = bio.age||'-';
+    document.getElementById('statExp').innerHTML = (bio.experience||'0')+'<span style="font-size:18px">+</span>';
+
+    // Socials
+    let socHtml='';
+    if(bio.github) socHtml+=`<a href="${bio.github}" target="_blank" class="social-btn" title="GitHub">🐙</a>`;
+    if(bio.instagram) socHtml+=`<a href="${bio.instagram}" target="_blank" class="social-btn" title="Instagram">📸</a>`;
+    if(bio.linkedin) socHtml+=`<a href="${bio.linkedin}" target="_blank" class="social-btn" title="LinkedIn">💼</a>`;
+    if(bio.website) socHtml+=`<a href="${bio.website}" target="_blank" class="social-btn" title="Website">🌐</a>`;
+    document.getElementById('bioSocials').innerHTML = socHtml;
+}
+
+// ================= RENDER PROJECTS =================
+function renderProjects(filter='all'){
+    const g = document.getElementById('projectsGrid');
+    let list = projects;
+    if(filter==='active') list=projects.filter(p=>p.status==='active');
+    else if(filter==='offline') list=projects.filter(p=>p.status==='offline');
+
+    document.getElementById('statProjects').textContent = projects.length;
+
+    if(!list.length){
+        g.innerHTML=`<div class="empty-state">
+            <div class="icon">📭</div>
+            <h3>${projects.length===0?'Belum Ada Project':'Tidak Ditemukan'}</h3>
+            <p>${projects.length===0?'Tambahkan project pertama melalui Admin Panel':'Tidak ada project dengan filter ini'}</p>
+        </div>`;
+        return;
+    }
+
+    g.innerHTML = list.map((p,i)=>`
+        <div class="project-card ${p.status==='offline'?'inactive':''}" style="animation: fadeInUp 0.5s ease ${i*0.08}s both">
+            <div class="card-img">
+                <div class="card-logo">
+                    ${p.logo?`<img src="${p.logo}" onerror="this.outerHTML='<span class=cl-text>${(p.logoInitial||p.name.charAt(0))}</span>'">`:`<span class="cl-text" style="color:${p.logoColor||'#a29bfe'}">${p.logoInitial||p.name.charAt(0)}</span>`}
+                </div>
+                <span class="card-badge ${p.status==='active'?'on':'off'}">${p.status==='active'?'🟢 Active':'🔴 Offline'}</span>
+                <img src="${p.image}" alt="${p.name}" onerror="this.style.background='linear-gradient(135deg,#1a1a3e,#2a2a5e)';this.style.display='flex';">
+                <div class="card-overlay">
+                    <div class="overlay-btns">
+                        ${p.url?`<a href="${p.url}" target="_blank" class="o-btn live">🔗 Live</a>`:''}
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <h3>${p.name}</h3>
+                <p>${p.description}</p>
+                <div class="card-tags">${p.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+                <div class="card-foot">
+                    <span>📅 ${fmtDate(p.date)}</span>
+                    <span>${p.category||''}</span>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function fmtDate(d){
+    if(!d) return '-';
+    const dt=new Date(d);
+    const m=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+    return `${dt.getDate()} ${m[dt.getMonth()]} ${dt.getFullYear()}`;
+}
+
+function filterProjects(f, btn){
+    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+    if(btn) btn.classList.add('active');
+    renderProjects(f);
+}
+
+// ================= LOGIN =================
+function showLogin(){
+    if(loggedIn){ openAdmin(); return; }
+    document.getElementById('loginModal').classList.add('show');
+    setTimeout(()=>document.getElementById('pwInput').focus(),100);
+}
+function closeLogin(){
+    document.getElementById('loginModal').classList.remove('show');
+    document.getElementById('pwInput').value='';
+}
+function doLogin(){
+    if(document.getElementById('pwInput').value===PASS){
+        loggedIn=true; closeLogin(); openAdmin();
+        toast('Login berhasil! 👋','success');
+    } else {
+        toast('Password salah!','error');
+        document.getElementById('pwInput').value='';
+        document.getElementById('pwInput').focus();
+    }
+}
+
+// ================= ADMIN =================
+function openAdmin(){
+    document.getElementById('adminPanel').classList.add('show');
+    document.body.style.overflow='hidden';
+    checkMobile();
+    switchTab('add',document.querySelector('.sb-btn'));
+}
+function closeAdmin(){
+    document.getElementById('adminPanel').classList.remove('show');
+    document.body.style.overflow='';
+}
+function checkMobile(){
+    const mob = window.innerWidth <= 768;
+    document.getElementById('mobileTabBar').style.display = mob?'flex':'none';
+}
+window.addEventListener('resize', checkMobile);
+
+function switchTab(tab, btn){
+    document.querySelectorAll('.sb-btn').forEach(b=>b.classList.remove('active'));
+    if(btn) btn.classList.add('active');
+    // Sync mobile + desktop
+    const allBtns = document.querySelectorAll('.sb-btn');
+    const tabIdx = {add:0,manage:1,bio:2,site:3,settings:4}[tab];
+    allBtns.forEach((b,i)=>{ if(i%5===tabIdx || i===tabIdx) b.classList.add('active'); else b.classList.remove('active'); });
+
+    const c = document.getElementById('adminContent');
+    if(tab==='add') renderAddForm(c);
+    else if(tab==='manage') renderManage(c);
+    else if(tab==='bio') renderBioForm(c);
+    else if(tab==='site') renderSiteForm(c);
+    else if(tab==='settings') renderSettingsTab(c);
+}
+
+// ----- ADD PROJECT -----
+let editId = null;
+function renderAddForm(c, proj=null){
+    const e = proj!==null;
+    if(!e) editId=null;
+    c.innerHTML=`
+    <h3 style="margin-bottom:22px">${e?'✏️ Edit Project':'➕ Tambah Project Baru'}</h3>
+    <div class="form-grid">
+        <div class="fg"><label>Nama Project *</label>
+        <input id="pName" placeholder="My Website" value="${e?proj.name:''}"></div>
+        <div class="fg"><label>URL Website</label>
+        <input id="pUrl" placeholder="https://..." value="${e?(proj.url||''):''}"></div>
+        <div class="fg full"><label>Deskripsi *</label>
+        <textarea id="pDesc" placeholder="Deskripsi project...">${e?proj.description:''}</textarea></div>
+        <div class="fg"><label>URL Screenshot</label>
+        <input id="pImg" placeholder="https://...image.jpg" value="${e?proj.image:''}" oninput="prevImg(this.value)"></div>
+        <div class="fg"><label>Preview</label>
+        <div class="img-preview ${e&&proj.image?'has-img':''}" id="imgPrev" style="${e&&proj.image?'background-image:url('+proj.image+')':''}"><span class="pv-text">🖼️ Preview</span></div></div>
+        <div class="fg"><label>URL Logo</label>
+        <input id="pLogo" placeholder="https://...logo.png" value="${e?(proj.logo||''):''}"></div>
+        <div class="fg"><label>Inisial Logo</label>
+        <input id="pLogoI" maxlength="2" placeholder="AB" value="${e?(proj.logoInitial||''):''}"></div>
+        <div class="fg"><label>Warna Logo</label>
+        <input type="color" id="pLogoC" value="${e?(proj.logoColor||'#a29bfe'):'#a29bfe'}" style="height:44px;cursor:pointer;"></div>
+        <div class="fg"><label>Tags (koma)</label>
+        <input id="pTags" placeholder="HTML, CSS, JS" value="${e?proj.tags.join(', '):''}"></div>
+        <div class="fg"><label>Kategori</label>
+        <select id="pCat">
+            ${['Web App','Blog','Portfolio','Dashboard','E-Commerce','Mobile App','Landing Page','Lainnya'].map(o=>`<option ${e&&proj.category===o?'selected':''}>${o}</option>`).join('')}
+        </select></div>
+        <div class="fg"><label>Status</label>
+        <select id="pStat">
+            <option value="active" ${e&&proj.status==='active'?'selected':''}>🟢 Active</option>
+            <option value="offline" ${e&&proj.status==='offline'?'selected':''}>🔴 Offline</option>
+        </select></div>
+        <div class="fg"><label>Tanggal</label>
+        <input type="date" id="pDate" value="${e?proj.date:new Date().toISOString().split('T')[0]}"></div>
+        <div class="form-actions">
+            <button class="btn-save" onclick="${e?'updateProject()':'addProject()'}">
+                ${e?'💾 Update':'🚀 Simpan'}
+            </button>
+            ${e?'<button class="btn-cancel" onclick="switchTab(\'manage\',null)">Batal</button>':''}
+        </div>
+    </div>`;
+}
+
+function prevImg(u){
+    const p=document.getElementById('imgPrev');
+    if(u){p.style.backgroundImage=`url(${u})`;p.classList.add('has-img');}
+    else{p.style.backgroundImage='';p.classList.remove('has-img');}
+}
+
+function addProject(){
+    const n=document.getElementById('pName').value.trim();
+    const d=document.getElementById('pDesc').value.trim();
+    if(!n||!d){toast('Nama & deskripsi wajib!','error');return;}
+    projects.unshift({
+        id:Date.now(), name:n, description:d,
+        image:document.getElementById('pImg').value.trim()||`https://via.placeholder.com/600x400/1a1a3e/6c5ce7?text=${encodeURIComponent(n)}`,
+        logo:document.getElementById('pLogo').value.trim(),
+        logoInitial:document.getElementById('pLogoI').value.trim()||n.substring(0,2).toUpperCase(),
+        logoColor:document.getElementById('pLogoC').value,
+        url:document.getElementById('pUrl').value.trim(),
+        tags:document.getElementById('pTags').value.split(',').map(t=>t.trim()).filter(t=>t),
+        category:document.getElementById('pCat').value,
+        status:document.getElementById('pStat').value,
+        date:document.getElementById('pDate').value
+    });
+    saveData('pp_projects',projects);
+    renderProjects(); toast(`"${n}" ditambahkan! 🎉`,'success');
+    renderAddForm(document.getElementById('adminContent'));
+}
+
+function editProject(id){
+    const p=projects.find(x=>x.id===id);
+    if(!p)return; editId=id;
+    switchTab('add',null);
+    setTimeout(()=>renderAddForm(document.getElementById('adminContent'),p),50);
+}
+
+function updateProject(){
+    const n=document.getElementById('pName').value.trim();
+    const d=document.getElementById('pDesc').value.trim();
+    if(!n||!d){toast('Nama & deskripsi wajib!','error');return;}
+    const i=projects.findIndex(x=>x.id===editId);
+    if(i===-1)return;
+    projects[i]={...projects[i],name:n,description:d,
+        image:document.getElementById('pImg').value.trim()||projects[i].image,
+        logo:document.getElementById('pLogo').value.trim(),
+        logoInitial:document.getElementById('pLogoI').value.trim()||n.substring(0,2).toUpperCase(),
+        logoColor:document.getElementById('pLogoC').value,
+        url:document.getElementById('pUrl').value.trim(),
+        tags:document.getElementById('pTags').value.split(',').map(t=>t.trim()).filter(t=>t),
+        category:document.getElementById('pCat').value,
+        status:document.getElementById('pStat').value,
+        date:document.getElementById('pDate').value
+    };
+    saveData('pp_projects',projects); renderProjects();
+    toast(`"${n}" diupdate! ✅`,'success'); editId=null;
+    switchTab('manage',null);
+}
+
+// ----- MANAGE -----
+function renderManage(c){
+    if(!projects.length){
+        c.innerHTML=`<div class="empty-state"><div class="icon">📭</div><h3>Belum ada project</h3><p>Tambahkan melalui tab "Tambah"</p></div>`;
+        return;
+    }
+    c.innerHTML=`<h3 style="margin-bottom:18px">📋 Kelola Project (${projects.length})</h3>
+    <div class="a-list">${projects.map(p=>`
+        <div class="a-item">
+            <div class="a-thumb"><img src="${p.image}" onerror="this.style.background='#1a1a3e'"></div>
+            <div class="a-info"><h4>${p.name}</h4><span>${p.category||''} • ${fmtDate(p.date)}</span></div>
+            <div class="a-actions">
+                <label class="toggle" title="${p.status}">
+                    <input type="checkbox" ${p.status==='active'?'checked':''} onchange="togStatus(${p.id},this.checked)">
+                    <span class="toggle-track"></span>
+                </label>
+                <button class="btn-sm btn-edit" onclick="editProject(${p.id})" title="Edit">✏️</button>
+                <button class="btn-sm btn-del" onclick="delProject(${p.id},'${p.name.replace(/'/g,"\\'")}')" title="Hapus">🗑️</button>
+            </div>
+        </div>
+    `).join('')}</div>`;
+}
+
+function togStatus(id,on){
+    const i=projects.findIndex(x=>x.id===id);
+    if(i===-1)return;
+    projects[i].status=on?'active':'offline';
+    saveData('pp_projects',projects); renderProjects();
+    toast(`${projects[i].name} → ${on?'🟢 Active':'🔴 Offline'}`,on?'success':'info');
+}
+
+function delProject(id,name){
+    if(!confirm(`Hapus "${name}"?`))return;
+    projects=projects.filter(x=>x.id!==id);
+    saveData('pp_projects',projects); renderProjects();
+    renderManage(document.getElementById('adminContent'));
+    toast(`"${name}" dihapus 🗑️`,'error');
+}
+
+// ----- BIODATA -----
+function renderBioForm(c){
+    c.innerHTML=`
+    <h3 style="margin-bottom:22px">👤 Biodata</h3>
+    <div class="form-grid">
+        <div class="fg"><label>Nama Lengkap</label>
+        <input id="bName" value="${bio.name}" placeholder="John Doe"></div>
+        <div class="fg"><label>Role / Profesi</label>
+        <input id="bRole" value="${bio.role}" placeholder="Web Developer"></div>
+        <div class="fg full"><label>Bio / Deskripsi</label>
+        <textarea id="bDesc" placeholder="Ceritakan tentang dirimu...">${bio.desc}</textarea></div>
+        <div class="fg"><label>URL Avatar</label>
+        <input id="bAvatar" value="${bio.avatar}" placeholder="https://...photo.jpg"></div>
+        <div class="fg"><label>Inisial (jika tanpa foto)</label>
+        <input id="bAvatarI" value="${bio.avatarInitial}" maxlength="2" placeholder="JD"></div>
+        <div class="fg"><label>📍 Lokasi</label>
+        <input id="bLoc" value="${bio.location}" placeholder="Jakarta, Indonesia"></div>
+        <div class="fg"><label>📧 Email</label>
+        <input id="bEmail" value="${bio.email}" placeholder="email@domain.com"></div>
+        <div class="fg"><label>📱 Telepon</label>
+        <input id="bPhone" value="${bio.phone}" placeholder="+62..."></div>
+        <div class="fg"><label>🎂 Umur</label>
+        <input id="bAge" value="${bio.age}" placeholder="20 tahun"></div>
+        <div class="fg"><label>💼 Pengalaman (tahun)</label>
+        <input id="bExp" value="${bio.experience}" placeholder="3"></div>
+        <div class="fg"><label>🐙 GitHub URL</label>
+        <input id="bGithub" value="${bio.github}" placeholder="https://github.com/..."></div>
+        <div class="fg"><label>📸 Instagram URL</label>
+        <input id="bInsta" value="${bio.instagram}" placeholder="https://instagram.com/..."></div>
+        <div class="fg"><label>💼 LinkedIn URL</label>
+        <input id="bLinkedin" value="${bio.linkedin}" placeholder="https://linkedin.com/in/..."></div>
+        <div class="fg"><label>🌐 Website URL</label>
+        <input id="bWebsite" value="${bio.website}" placeholder="https://..."></div>
+        <div class="form-actions">
+            <button class="btn-save" onclick="saveBio()">💾 Simpan Biodata</button>
+        </div>
+    </div>`;
+}
+
+function saveBio(){
+    bio = {
+        name: document.getElementById('bName').value.trim(),
+        role: document.getElementById('bRole').value.trim(),
+        desc: document.getElementById('bDesc').value.trim(),
+        avatar: document.getElementById('bAvatar').value.trim(),
+        avatarInitial: document.getElementById('bAvatarI').value.trim(),
+        location: document.getElementById('bLoc').value.trim(),
+        email: document.getElementById('bEmail').value.trim(),
+        phone: document.getElementById('bPhone').value.trim(),
+        age: document.getElementById('bAge').value.trim(),
+        experience: document.getElementById('bExp').value.trim(),
+        github: document.getElementById('bGithub').value.trim(),
+        instagram: document.getElementById('bInsta').value.trim(),
+        linkedin: document.getElementById('bLinkedin').value.trim(),
+        website: document.getElementById('bWebsite').value.trim()
+    };
+    saveData('pp_bio', bio);
+    applyBio();
+    toast('Biodata tersimpan! ✅','success');
+}
+
+// ----- SITE SETTINGS -----
+function renderSiteForm(c){
+    c.innerHTML=`
+    <h3 style="margin-bottom:22px">🎨 Pengaturan Situs</h3>
+    <div class="form-grid">
+        <div class="fg"><label>Logo Text</label>
+        <input id="sLogoT" value="${site.logoText}" placeholder="Porto"></div>
+        <div class="fg"><label>Logo Initial</label>
+        <input id="sLogoI" value="${site.logoInitial}" maxlength="2" placeholder="P"></div>
+        <div class="fg full"><label>Hero Title (support HTML)</label>
+        <textarea id="sHeroT" rows="2">${site.heroTitle}</textarea></div>
+        <div class="fg full"><label>Hero Badge Text</label>
+        <input id="sHeroB" value="${site.heroBadge}" placeholder="Available for work"></div>
+        <div class="fg full"><label>Hero Description</label>
+        <textarea id="sHeroD">${site.heroDesc}</textarea></div>
+        <div class="fg full"><label>Footer Text</label>
+        <input id="sFooter" value="${site.footerText}"></div>
+        <div class="form-actions">
+            <button class="btn-save" onclick="saveSite()">💾 Simpan Situs</button>
+        </div>
+    </div>`;
+}
+
+function saveSite(){
+    site = {
+        logoText: document.getElementById('sLogoT').value.trim(),
+        logoInitial: document.getElementById('sLogoI').value.trim(),
+        heroTitle: document.getElementById('sHeroT').value.trim(),
+        heroBadge: document.getElementById('sHeroB').value.trim(),
+        heroDesc: document.getElementById('sHeroD').value.trim(),
+        footerText: document.getElementById('sFooter').value.trim()
+    };
+    saveData('pp_site',site);
+    applySite();
+    toast('Pengaturan situs tersimpan! ✅','success');
+}
+
+// ----- SETTINGS TAB -----
+function renderSettingsTab(c){
+    c.innerHTML=`
+    <h3 style="margin-bottom:22px">⚙️ Pengaturan Lainnya</h3>
+    <div class="s-card">
+        <h4>📊 Statistik</h4>
+        <p>Total Project: <strong style="color:white">${projects.length}</strong></p>
+        <p>Active: <strong style="color:var(--success)">${projects.filter(p=>p.status==='active').length}</strong></p>
+        <p>Offline: <strong style="color:var(--danger)">${projects.filter(p=>p.status==='offline').length}</strong></p>
+    </div>
+    <div class="s-card">
+        <h4>📤 Export Data</h4>
+        <p style="margin-bottom:14px">Download semua data (projects + bio + site) dalam format JSON</p>
+        <button class="btn-save" onclick="exportAll()" style="background:linear-gradient(135deg,var(--secondary),#81ecec);">📥 Download JSON</button>
+    </div>
+    <div class="s-card">
+        <h4>📥 Import Data</h4>
+        <p style="margin-bottom:14px">Import dari file JSON yang sudah di-export</p>
+        <input type="file" accept=".json" onchange="importAll(event)" style="font-size:13px; color:var(--text-muted);">
+    </div>
+    <div class="s-card">
+        <h4>🔄 Reset Semua Data</h4>
+        <p style="margin-bottom:14px">Hapus semua data (projects, biodata, pengaturan situs)</p>
+        <button class="btn-cancel" onclick="resetAll()" style="background:rgba(255,71,87,0.1);color:var(--danger);border-color:rgba(255,71,87,0.2);">🗑️ Reset Semua</button>
+    </div>
+    <div class="s-card">
+        <h4>🔐 Info Login</h4>
+        <p>Password: <code style="background:rgba(108,92,231,0.15);padding:3px 10px;border-radius:6px;color:var(--primary-light);">rajxz09</code></p>
+    </div>`;
+}
+
+function exportAll(){
+    const data = { projects, bio, site, exportDate: new Date().toISOString() };
+    const blob = new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'portfolio-backup.json';
+    a.click(); URL.revokeObjectURL(a.href);
+    toast('Data berhasil di-export! 📥','success');
+}
+
+function importAll(e){
+    const file = e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = function(ev){
+        try {
+            const data = JSON.parse(ev.target.result);
+            if(data.projects) { projects = data.projects; saveData('pp_projects', projects); }
+            if(data.bio) { bio = data.bio; saveData('pp_bio', bio); }
+            if(data.site) { site = data.site; saveData('pp_site', site); }
+            renderProjects(); applyBio(); applySite();
+            toast('Data berhasil di-import! ✅','success');
+            renderSettingsTab(document.getElementById('adminContent'));
+        } catch(err) {
+            toast('File tidak valid!','error');
+        }
+    };
+    reader.readAsText(file);
+}
+
+function resetAll(){
+    if(!confirm('Yakin reset SEMUA data? Ini tidak bisa dikembalikan!')) return;
+    localStorage.removeItem('pp_projects');
+    localStorage.removeItem('pp_bio');
+    localStorage.removeItem('pp_site');
+    projects = [];
+    bio = { name:'',role:'',desc:'',avatar:'',avatarInitial:'?',location:'',email:'',phone:'',age:'',github:'',instagram:'',linkedin:'',website:'',experience:'0' };
+    site = { logoText:'Porto',logoInitial:'P',heroTitle:'Saya Membuat <br><span class="highlight">Website Modern</span>',heroBadge:'Available for work',heroDesc:'Full-stack web developer yang berfokus pada pembuatan website yang indah, fungsional, dan responsif.',footerText:'© 2025 Portfolio. Dibuat dengan ❤️' };
+    renderProjects(); applyBio(); applySite();
+    renderSettingsTab(document.getElementById('adminContent'));
+    toast('Semua data direset! 🔄','info');
+}
+
+// ================= TOAST =================
+function toast(msg,type='info'){
+    const t = document.createElement('div');
+    t.className=`toast ${type}`;
+    t.textContent=msg;
+    document.getElementById('toastBox').appendChild(t);
+    setTimeout(()=>t.remove(),3200);
+}
+
+// ================= COUNTER ANIMATION =================
+function animNum(el,target){
+    let cur=0; const step=target/35;
+    const timer=setInterval(()=>{
+        cur+=step; if(cur>=target){cur=target;clearInterval(timer);}
+        el.textContent=Math.floor(cur);
+    },45);
+}
+
+let statsAnim=false;
+const sObs=new IntersectionObserver(es=>{
+    es.forEach(e=>{
+        if(e.isIntersecting&&!statsAnim){
+            statsAnim=true;
+            animNum(document.getElementById('statProjects'),projects.length);
+        }
+    });
+},{threshold:0.5});
+sObs.observe(document.querySelector('.stats-bar'));
+
+// ================= INIT =================
+applySite();
+applyBio();
+renderProjects();
+</script>
+</body>
+</html>
